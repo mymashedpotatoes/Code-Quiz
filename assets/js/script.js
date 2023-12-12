@@ -193,13 +193,8 @@ highBtn.addEventListener('click', ()=> {
 
 var userInputEl = document.querySelector("#initals-input");
 
+initalsList.textContent = localStorage.getItem("scores");
 
-
-
-// render();
-// function render() {
-//     initalsList.textContent = localStorage.getItem("scores");
-// }
 var submitBtn = document.querySelector("#initals-submit");
 
 submitBtn.addEventListener("click", function (event) {
