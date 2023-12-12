@@ -21,6 +21,7 @@ var highScores = document.getElementById('high');
 var clearBtn = document.getElementById('clear-initals-btn');
 var initalsList = document.getElementById("initals-list");
 var initialsForm = document.getElementById("initals-form");
+var scoresList = document.querySelector("#scores-list");
 
 //Universal for page
 var countdownEl = document.getElementById('countdown');
@@ -190,26 +191,29 @@ highBtn.addEventListener('click', ()=> {
     quizDone.classList.add('hide');
 })
 
-var scoresList = document.querySelector("#scores-list");
-render();
-function render() {
-    initalsList.textContent = localStorage.getItem("input");
-    scoresList.textContent = localStorage.getItem("score");
-}
+var userInputEl = document.querySelector("#initals-input");
+
+
+
+
+// render();
+// function render() {
+//     initalsList.textContent = localStorage.getItem("scores");
+// }
 var submitBtn = document.querySelector("#initals-submit");
+
 submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    var initals = document.querySelector("#initals-input");
-
-    localStorage.setItem("input", initals.value);
-    localStorage.setItem("score", userScore);
-    render();
+    var initals = userInputEl.value;
+    var highscore = {initals, userScore}
+    var scores = JSON.parse(localStorage.getItem('scores')) || [];
+    scores.push(highscore);
+    localStorage.setItem('scores', JSON.stringify(scores));
 });
 
 clearBtn.addEventListener("click", function () {
     localStorage.clear();
     document.getElementById("initals-list").innerHTML = "";
-    document.getElementById("scores-list").innerHTML = "";
 });
 
 startQuiz();
