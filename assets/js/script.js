@@ -34,52 +34,53 @@ var highBtn = document.getElementById('high-btn');
 //questions for quiz
 var questions = [
     {
-        question: "This is a question?",
+        question: "Commonly used data types DO NOT include:",
         answers: [
-            {text: "Yes", correct: true},
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "No", correct: false}
+            {text: "strings", correct: false},
+            {text: "booleans", correct: false},
+            {text: "alerts", correct: true},
+            {text: "numbers", correct: false}
         ]
     },
     {
-        question: "This is a another question?",
+        question: "The condition in an if / else statement is enclosed within _____.",
         answers: [
-            {text: "No", correct: false},
-            {text: "Yes", correct: true},
-            {text: "No", correct: false},
-            {text: "No", correct: false}
+            {text: "quotes", correct: false},
+            {text: "curley brackets", correct: true},
+            {text: "parentheses", correct: false},
+            {text: "square brackets", correct: false}
         ]
     },
     {
-        question: "This is a third question?",
+        question: "Arrays in JavaScript can be used to store ____.",
         answers: [
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "Yes", correct: true}
+            {text: "numbers and strings", correct: false},
+            {text: "other arrays", correct: false},
+            {text: "booleans", correct: false},
+            {text: "all of the above", correct: true}
         ]
     },
     {
-        question: "This is a third question?",
+        question: "Sting values must be enclosed within _____ when being assigned to variables.",
         answers: [
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "Yes", correct: true}
+            {text: "commas", correct: false},
+            {text: "curley brackets", correct: false},
+            {text: "quotes", correct: true},
+            {text: "parentheses", correct: false}
         ]
     },
     {
-        question: "This is a third question?",
+        question: "A very useful tool used during development and debugging for printing conent to the debugger is:",
         answers: [
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "No", correct: false},
-            {text: "Yes", correct: true}
+            {text: "javascript", correct: false},
+            {text: "terminal / bash", correct: false},
+            {text: "for loops", correct: false},
+            {text: "console.log", correct: true}
         ]
     }
 ];    
 
+//function to start countdown timer
 function countdown() {
   var timeInterval = setInterval(function () {
     timeLeft--;
@@ -92,8 +93,10 @@ function countdown() {
   }, 1000);
 };
 
+//event listener to start showing questions
 startBtn.addEventListener('click', showQuestions)
 
+//function to init quiz
 function startQuiz(){
     currentQuestionIndex = 0;
     userScore = 0;
@@ -101,6 +104,7 @@ function startQuiz(){
 
 }
 
+//function to show quiz questions
 function showQuestions() {
     startContainer.classList.add("hide");
     countdown();
@@ -108,7 +112,7 @@ function showQuestions() {
    
     startQuizEl.classList.remove("hide");
     var currentQuestion = questions[currentQuestionIndex];
-    var questionNo = currentQuestion + 1;
+    var questionNo = currentQuestionIndex + 1;
     questionElement.innerHTML = questionNo + ". " +currentQuestion.question;
 
     currentQuestion.answers.forEach(answer => {
@@ -123,6 +127,7 @@ function showQuestions() {
     });
 }
 
+//function to reset quiz state
 function resetState() {
     nextBtn.style.display = "none";
     while(answerBtns.firstChild) {
@@ -131,6 +136,7 @@ function resetState() {
 
 }
 
+//function to handle users answer selection
 function selectAnswer(e) {
     const selectedBtn = e.target;
     const isCorrect = selectedBtn.dataset.correct === "true";
@@ -150,6 +156,7 @@ function selectAnswer(e) {
     nextBtn.style.display = "block";
 }
 
+//function to show users score
 function showScore() {
     resetState();
     quizDone.classList.remove("hide");
@@ -161,6 +168,7 @@ function showScore() {
     nextBtn.style.display = "block";
 }
 
+//function to handle next button
 function handleNextButton() {
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
@@ -170,6 +178,7 @@ function handleNextButton() {
     }
 }
 
+//event listener for next button
 nextBtn.addEventListener("click", ()=> {
     if(currentQuestionIndex < questions.length){
         handleNextButton();
@@ -178,37 +187,47 @@ nextBtn.addEventListener("click", ()=> {
     }
 })
 
+//function to handle end of quiz
 function endQuiz() {
- if (currentQuestionIndex = questions.length || timeLeft === 0){
+ if (currentQuestionIndex === questions.length || timeLeft === 0){
     highScoresScreen.classList.add("hide");
     quizDone.classList.remove("hide");
     
  }
 }
+
+//event listener for the highscores button
 highBtn.addEventListener('click', ()=> {
     startContainer.classList.add("hide");
     highScoresScreen.classList.remove('hide');
     quizDone.classList.add('hide');
 })
 
+//displaying highscores from local storage
+function displayHighscores() {
+    initalsList.textContent = localStorage.getItem("scores");
+}
+
+//querying the input element for user initials
 var userInputEl = document.querySelector("#initals-input");
 
-initalsList.textContent = localStorage.getItem("scores");
-
+//event listener for submitting scores
 var submitBtn = document.querySelector("#initals-submit");
-
 submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    var initals = userInputEl.value;
-    var highscore = {initals, userScore}
+    var initials = userInputEl.value;
+    var highscore = { initials, userScore };
     var scores = JSON.parse(localStorage.getItem('scores')) || [];
     scores.push(highscore);
     localStorage.setItem('scores', JSON.stringify(scores));
+    displayHighscores(); // Update the highscores list after submission
 });
 
+//event listener for clearing highscores
 clearBtn.addEventListener("click", function () {
     localStorage.clear();
     document.getElementById("initals-list").innerHTML = "";
 });
 
+//init the quiz
 startQuiz();
