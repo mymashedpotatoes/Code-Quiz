@@ -12,7 +12,7 @@ const nextBtn = document.getElementById("next-btn");
 var quizDone = document.getElementById('quiz-done');
 var submitBtn = document.getElementById("initals-submit");
 var scores= document.getElementById("scores");
-var initalsInput = document.querySelector("#initals-input").value;
+var initalsInput = document.querySelector("#initals-input");
 var inputs = [];
 
 //View Highscores Page Elements
@@ -27,7 +27,7 @@ var scoresList = document.querySelector("#scores-list");
 var countdownEl = document.getElementById('countdown');
 var timeLeft = 75;
 var currentQuestionIndex = 0;
-var userScore = 0;
+// var userScore = 0;
 var initials = [];
 var highBtn = document.getElementById('high-btn');
 
@@ -99,17 +99,15 @@ startBtn.addEventListener('click', showQuestions)
 //function to init quiz
 function startQuiz(){
     currentQuestionIndex = 0;
-    userScore = 0;
     nextBtn.innerHTML = "Next";
-
+   
 }
 
 //function to show quiz questions
 function showQuestions() {
     startContainer.classList.add("hide");
-    countdown();
     resetState();
-   
+    countdown();
     startQuizEl.classList.remove("hide");
     var currentQuestion = questions[currentQuestionIndex];
     var questionNo = currentQuestionIndex + 1;
@@ -142,7 +140,6 @@ function selectAnswer(e) {
     const isCorrect = selectedBtn.dataset.correct === "true";
     if(isCorrect){
         selectedBtn.classList.add("correct");
-        userScore++;
     } else {
         selectedBtn.classList.add("incorrect");
         timeLeft -= 10;
@@ -161,9 +158,10 @@ function showScore() {
     resetState();
     quizDone.classList.remove("hide");
     countdownEl.classList.add("hide");
-    highScoresScreen.classList.remove("hide");
     startQuizEl.classList.add("hide");
-    scores.innerHTML = userScore;
+    highScoresScreen.classList.remove("hide");
+    
+    scores.innerHTML = timeLeft;
     nextBtn.innerHTML = "submit";
     nextBtn.style.display = "block";
 }
@@ -199,28 +197,46 @@ function endQuiz() {
 //event listener for the highscores button
 highBtn.addEventListener('click', ()=> {
     startContainer.classList.add("hide");
-    highScoresScreen.classList.remove('hide');
+    startQuizEl.classList.add('hide');
     quizDone.classList.add('hide');
+    highScoresScreen.classList.remove('hide');
 })
+    
 
-//displaying highscores from local storage
+
+//display highscores function
 function displayHighscores() {
-    initalsList.textContent = localStorage.getItem("scores");
+    var orderedList = document.querySelector(`ol`); 
+    orderedList.innerHTML = `` 
+
+    var arrayScores = JSON.parse(localStorage.getItem(`scores`)); 
+    if (arrayScores != null) { 
+        for (let index = 0; index < arrayScores.length; index++) { 
+            var li = document.createElement(`li`) 
+            li.textContent = arrayScores[index].initials + ` - ` + arrayScores[index].timeLeft; 
+            orderedList.appendChild(li); 
+        }
+
+    }
+
+    return;
 }
+
 
 //querying the input element for user initials
 var userInputEl = document.querySelector("#initals-input");
 
 //event listener for submitting scores
 var submitBtn = document.querySelector("#initals-submit");
+
 submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
     var initials = userInputEl.value;
-    var highscore = { initials, userScore };
+    var highscore = { initials, timeLeft };
     var scores = JSON.parse(localStorage.getItem('scores')) || [];
     scores.push(highscore);
     localStorage.setItem('scores', JSON.stringify(scores));
-    displayHighscores(); // Update the highscores list after submission
+    displayHighscores(); //update the highscores list after submission
 });
 
 //event listener for clearing highscores

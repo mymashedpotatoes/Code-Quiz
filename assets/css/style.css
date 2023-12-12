@@ -1,21 +1,36 @@
+:root {
+    --blue: rgb(88, 101, 124);
+
+}
+
 * {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+body {
+    background-color: rgb(180, 180, 180);
+}
 .startbutton {
-    background-color: blueviolet;
+    background-color: var(--blue);
     color: white;
 }
+
 .view-highscores{
     outline: none;
-    background-color: blueviolet;
+    background-color: var(--blue);
     color: white;
 }
+
 button {
     outline: none;
     font-size: 1.3em;
-    background-color: blueviolet;
+    background-color: var(--blue);
     color: white;
+    border-radius: 10px;
 
+}
+
+.highscores h4 {
+    font-size: 1.5em;
 }
 
 .btn {
@@ -24,12 +39,11 @@ button {
     width: 80%;
     display: block;
 }
-h1 {
-    text-align: center;
-}
+
 p {
     text-align: center;
 }
+
 .outer-container {
     padding: 10px;
 }
@@ -50,6 +64,7 @@ p {
     flex-direction: column;
     justify-content: center;
 }
+
 .quiz-intro {
     margin-bottom: 30vh;
 }
@@ -63,28 +78,17 @@ p {
     display: block;
     margin: auto;
     width: 100%;
+    font-size: 2.5em;
+    text-align: center;
+    
 }
 
-.answer-button {
-    background-color: white;
-    color: black;
-    width: 100%;
-    border: 1px solid blue;
-    padding: 10px;
-    margin: 10px 0;
-    text-align: left;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.answer-button:hover:not([disabled]) {
-    background-color: black;
-    color: white;
+.quiz-intro p {
+    padding: 5%;
 }
 
 #next-btn {
-    background-color: rgb(139, 50, 255);
+    background-color: var(--blue);
     color: white;
     width: 150px;
     border: 0;
